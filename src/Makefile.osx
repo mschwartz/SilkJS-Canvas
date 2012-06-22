@@ -1,0 +1,22 @@
+GCC = /usr/bin/gcc-4.2
+GPP = g++
+LD = g++
+
+OBJ=cairo.o
+
+V8LIB_DIR=/usr/local/silkjs/src/v8
+
+V8LIB_DIR=/usr/local/silkjs/src/v8
+
+V8= $(V8LIB_DIR)/libv8_base.a $(V8LIB_DIR)/libv8_snapshot.a
+
+CCFLAGS=-fPIC -I/usr/local/silkjs/src -I$(V8LIB_DIR)/include -I/usr/X11/include
+
+.cpp.o:
+	$(GPP) -c $(CCFLAGS) -o $*.o $*.cpp
+
+all:    $(DEP) $(OBJ)
+	$(LD) -shared -Wl,-install_name,cairo_module.so -o cairo_module.so $(OBJ) -L$(V8LIB_DIR) -lv8  -L/usr/X11/lib -lcairo
+
+realclean:
+	@rm -rf src/*.o src/*.so
